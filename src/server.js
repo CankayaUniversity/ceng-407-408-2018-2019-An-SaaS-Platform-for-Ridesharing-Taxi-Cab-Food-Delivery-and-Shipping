@@ -24,17 +24,22 @@ const publicDirectoryPath = path.join(__dirname, '/public')
 const partialsPath = path.join(__dirname, '/views/partials')
 hbs.registerPartials(partialsPath)
 
-// Setup static dir to serve
+// setup static dir to serve
 app.use(express.static(publicDirectoryPath)) 
 
-// Setup json handler with express for json data parsing from request data
+// setup json handler with express for json data parsing from request data
 app.use(express.json())
+
+// uncomment this codeblock for disabling the server for maintenance mode
+// app.use((req,res,next) => {
+//     res.status(503).send('Site is temporarily down. Please check back at a later date.')
+// })
 
 // serve pages from routers
 app.use(apiRouter)
 app.use(pagesRouter)
 
-//specifying the port for the server to listen
+// specifying the port for the server to listen
 app.listen(port, () => {
     console.log('Server is up on port', port);
     
