@@ -4,8 +4,10 @@ const auth = require('../middleware/auth')
 const app = express()
 
 
-// define user model
+// define models
 const User = require('./../models/user')
+const Ride = require('./../models/ride')
+
 
 router.post('/users', async (req, res) => {
     const user = new User(req.body)
@@ -60,6 +62,25 @@ router.get('/users/me', auth, async (req, res) => {
     try {
         res.send(req.user)
     } catch (e) {
+        res.status(500).send()
+    }
+})
+
+// request a ride
+router.post('/users/ride', auth, async (req, res) => {
+    
+    try {
+        const ride = await Ride(req.body)
+        if (ride) {
+            console.log(req.body);
+            ride.passenger = req.user._id
+            await ride.save()
+            res.status(201).send({ ride })
+        }
+        
+    } catch (e) {
+        console.log(e);
+        
         res.status(500).send()
     }
 })
