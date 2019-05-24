@@ -9,6 +9,7 @@ AppRegistry.registerComponent('Sblank',() => LoginScreen)
 import HomeScreen from '../screens/HomeScreen';
 import LinksScreen from '../screens/LinksScreen';
 import SettingsScreen from '../screens/SettingsScreen';
+import RegisterScreen from '../screens/RegisterScreen'
 
 const LoginStack = createStackNavigator({
   Login: LoginScreen,

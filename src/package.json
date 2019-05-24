@@ -1,5 +1,5 @@
 {
-  "name": "riders",
+  "name": "app.js",
   "version": "1.0.0",
   "main": "server.js",
   "scripts": {
@@ -9,15 +9,17 @@
   },
   "author": "Onur Ata Saritas",
   "license": "ISC",
-  "description": "",
+  "description": "Client added",
   "devDependencies": {
     "nodemon": "^1.18.11"
   },
   "dependencies": {
+    "bcrypt": "^3.0.6",
+    "bcryptjs": "^2.4.3",
     "express": "^4.16.4",
     "hbs": "^4.0.4",
     "jsonwebtoken": "^8.5.1",
-    "mongodb": "^3.2.3",
+    "mongodb": "^3.2.5",
     "mongoose": "^5.5.4",
     "validator": "^10.11.0"
   }

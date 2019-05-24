@@ -9,9 +9,16 @@ import {
   Image,
   Alert
 } from 'react-native';
-
+import { 
+  Register, 
+  Home,
+  Login,
+} from '../navigation/AppNavigator'
 export default class LoginScreen extends React.Component {
 
+  static navigationOptions = {
+    title: 'Welcome',
+  };
   constructor(props) {
     super(props);
     state = {
@@ -19,33 +26,49 @@ export default class LoginScreen extends React.Component {
       password: '',
     }
   }
+  
 
   _userLogin(props){
       
       if(props){
-          fetch("http://localhost:3000/users/login",{
+      
+          fetch("http://127.0.0.1:3000/users/login",{
               method:'POST',
               headers:{
                   'Accept':'application/json',
                   'Content-Type':'application/json'
               },
               body: JSON.stringify({
-                  username:this.username,
+                  email:this.email,
                   password:this.password,
               })
           })
-          .then((response)=>response.json())
+          .then((response)=>response.json.token())
           .then((responseData)=> {
-              Alert.alert("Login Succest"),
+              Alert.alert("Login Success"),
              this._onValuseChange(STORAGE_KEY,responseData.token)
             })
             .done();
-      }
+  
+    }
   }
 
+  
   render() {
     return (
       <View style={styles.container}>
+      <View>
+      <Image
+          style={{width: 120, height: 120,marginBottom:-40}}
+          source={require('../assets/images/home-icon.png')}
+          />
+      </View>
+      <View>
+      <Image
+          style={{width: 200, height: 200,marginBottom:0}}
+          source={require('../assets/images/rots-icon.png')}
+          />
+      </View>
         <View style={styles.inputContainer}>
           <Image style={styles.inputIcon} source={{uri: 'https://png.icons8.com/message/ultraviolet/50/3498db'}}/>
           <TextInput style={styles.inputs}
@@ -53,6 +76,7 @@ export default class LoginScreen extends React.Component {
               keyboardType="email-address"
               underlineColorAndroid='transparent'
               onChangeText={(email) => this.setState({email})}/>
+              
         </View>
         
         <View style={styles.inputContainer}>
@@ -64,16 +88,16 @@ export default class LoginScreen extends React.Component {
               onChangeText={(password) => this.setState({password})}/>
         </View>
 
-        <TouchableHighlight style={[styles.buttonContainer, styles.loginButton]} onPress={(props)=> this._userLogin(props)}>
+        <TouchableHighlight style={[styles.buttonContainer, styles.loginButton]} onPress={(user)=> this._userLogin(user)}>
           <Text style={styles.loginText}>Login</Text>
         </TouchableHighlight>
-
-        <TouchableHighlight style={styles.buttonContainer} onPress={() => this.onClickListener('restore_password')}>
-            <Text>Forgot your password?</Text>
+        
+        <TouchableHighlight style={[styles.buttonContainer, styles.loginButton]} onPress={()=> this.props.navigation.navigate("Register")}>
+            <Text style={styles.loginText}>Register</Text>
         </TouchableHighlight>
 
-        <TouchableHighlight style={styles.buttonContainer} onPress={() => this.onClickListener('register')}>
-            <Text>Register</Text>
+        <TouchableHighlight style={styles.buttonContainer} onPress={() => this.props.navigation.navigate('restore_password')}>
+            <Text>Forgot your password?</Text>
         </TouchableHighlight>
       </View>
     );
@@ -85,7 +109,8 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#DCDCDC',
+    backgroundColor: '#00b5ec',
+    
   },
   inputContainer: {
       borderBottomColor: '#F5FCFF',
@@ -120,7 +145,7 @@ const styles = StyleSheet.create({
     borderRadius:30,
   },
   loginButton: {
-    backgroundColor: "#00b5ec",
+    backgroundColor: "#FF8C00",
   },
   loginText: {
     color: 'white',
