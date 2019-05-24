@@ -20,7 +20,7 @@ export default createAppContainer(createSwitchNavigator({
  
 },
 {
-  initialRouteName: 'Comment',
+  initialRouteName: 'Login',
 }
 
 ));

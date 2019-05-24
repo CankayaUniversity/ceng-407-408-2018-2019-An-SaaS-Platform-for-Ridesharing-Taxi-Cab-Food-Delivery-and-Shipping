@@ -9,11 +9,6 @@ import {
   Image,
   Alert
 } from 'react-native';
-import { 
-  Register, 
-  Home,
-  Login,
-} from '../navigation/AppNavigator'
 export default class LoginScreen extends React.Component {
 
   static navigationOptions = {
@@ -31,8 +26,8 @@ export default class LoginScreen extends React.Component {
   _userLogin(props){
       
       if(props){
-      
-          fetch("http://127.0.0.1:3000/users/login",{
+          
+          fetch("http://localhost:3000/users/login",{
               method:'POST',
               headers:{
                   'Accept':'application/json',
@@ -46,7 +41,7 @@ export default class LoginScreen extends React.Component {
           .then((response)=>response.json.token())
           .then((responseData)=> {
               Alert.alert("Login Success"),
-             this._onValuseChange(STORAGE_KEY,responseData.token)
+             this._onValuesChange(STORAGE_KEY,responseData.token)
             })
             .done();
   
