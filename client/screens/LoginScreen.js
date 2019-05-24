@@ -32,7 +32,7 @@ export default class LoginScreen extends React.Component {
       
       if(props){
       
-          fetch("http://127.0.0.1:3000/users/login",{
+          fetch("http://localhost:3000/users/login",{
               method:'POST',
               headers:{
                   'Accept':'application/json',
