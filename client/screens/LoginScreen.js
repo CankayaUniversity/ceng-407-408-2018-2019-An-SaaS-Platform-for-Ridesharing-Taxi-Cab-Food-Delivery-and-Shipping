@@ -46,7 +46,7 @@ export default class LoginScreen extends React.Component {
           .then((response)=>response.json.token())
           .then((responseData)=> {
               Alert.alert("Login Success"),
-             this._onValuseChange(STORAGE_KEY,responseData.token)
+             this._onValuesChange(STORAGE_KEY,responseData.token)
             })
             .done();
   
