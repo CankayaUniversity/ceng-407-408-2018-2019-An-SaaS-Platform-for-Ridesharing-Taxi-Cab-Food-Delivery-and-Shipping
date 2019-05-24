@@ -49,7 +49,17 @@ const rideSchema = new mongoose.Schema({
     }
 })
 
+rideSchema.methods.allRides = async (radius) => {
+    const rides = await Ride.find({ongoing: false, finished: false})
+    // console.log('Rides: ')
+    // console.log(rides)
+    
+    if (!rides) {
+        throw new Error('Unable to login')
+    }
 
+    return rides
+}
 
 const Ride = mongoose.model('Ride', rideSchema)
 

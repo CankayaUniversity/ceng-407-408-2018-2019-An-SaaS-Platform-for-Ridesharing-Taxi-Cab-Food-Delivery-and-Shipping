@@ -66,25 +66,6 @@ router.get('/users/me', auth, async (req, res) => {
     }
 })
 
-// request a ride
-router.post('/users/ride', auth, async (req, res) => {
-    
-    try {
-        const ride = await Ride(req.body)
-        if (ride) {
-            console.log(req.body);
-            ride.passenger = req.user._id
-            await ride.save()
-            res.status(201).send({ ride })
-        }
-        
-    } catch (e) {
-        console.log(e);
-        
-        res.status(500).send()
-    }
-})
-
 // update user info route
 router.patch('/users/me', auth, async (req, res) => {
     const updates = Object.keys(req.body)
@@ -110,6 +91,44 @@ router.delete('/users/me', auth, async (req, res) => {
         await req.user.remove()
         res.send(req.user)
     } catch (e) {
+        res.status(500).send()
+    }
+})
+
+// request a ride
+router.post('/users/find_driver', auth, async (req, res) => {
+    
+    try {
+        const ride = await Ride(req.body)
+        if (ride) {
+            console.log(req.body);
+            ride.passenger = req.user._id
+            await ride.save()
+            res.status(201).send({ ride })
+        }
+        
+    } catch (e) {
+        console.log(e);
+        
+        res.status(500).send()
+    }
+})
+
+// find a passenger
+router.get('/users/find_passenger', auth, async (req, res) => {
+    
+    try {
+        const radius = req.body
+        console.log(req.body);
+        const ride = await Ride()
+        const listOfPassengers = await ride.allRides(radius)
+        console.log(listOfPassengers);
+        
+        res.status(201).send(listOfPassengers)
+        
+    } catch (e) {
+        console.log(e);
+        
         res.status(500).send()
     }
 })
