@@ -6,12 +6,9 @@ const User = require('./../models/user')
 
 // schema for the Ride entity
 const rideSchema = new mongoose.Schema({
-    passenger: {
+    matchmakeID: {
         type: String,
         required: true
-    },
-    driver: {
-        type: String
     },
     origin: {
         lat: {

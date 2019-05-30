@@ -57,6 +57,14 @@ const userSchema = new mongoose.Schema({
             }
         }
     },
+    userScore: {
+        type: Number,
+        default: 8
+    },
+    inQueue: {
+        type: Boolean,
+        default: false
+    },
     tokens: [{
         token: {
             type: String,
