@@ -5,12 +5,13 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node server.js",
-    "dev": "nodemon server.js"
+    "dev": "env-cmd -f ./config/dev.env nodemon server.js"
   },
   "author": "Onur Ata Saritas",
   "license": "ISC",
   "description": "Client added",
   "devDependencies": {
+    "env-cmd": "^9.0.2",
     "nodemon": "^1.18.11"
   },
   "dependencies": {

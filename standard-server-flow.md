@@ -1,6 +1,7 @@
 user requests ride
 
 request is stored in server
+
 server adds the request to queue
 
 driver looking for ride, refreshes

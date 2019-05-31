@@ -144,9 +144,10 @@ router.delete('/users/me', auth, async (req, res) => {
 })
 
 // ride request for 
-router.post('/users/find_driver', auth, async (req, res) => {
+router.post('/users/find', auth, async (req, res) => {
     
     try {
+        const radius = req.body
         const user = req.user
         if (!user.inQueue && user.userType == 'passenger') {
             passengerQueue.push(user)
@@ -154,32 +155,15 @@ router.post('/users/find_driver', auth, async (req, res) => {
             // user.inQueue = true
             user.save()
         }
-        else{
-            throw new Error()
-        }
-        
-    } catch (e) {
-        console.log(e);
-        
-        res.status(500).send()
-    }
-})
-
-// find a passenger
-router.post('/users/find_passenger', auth, async (req, res) => {
-    
-    try {
-        const radius = req.body
-        const user = req.user
-        if (!user.inQueue && user.userType == 'driver') {
+        else if (!user.inQueue && user.userType == 'driver') {
             driverQueue.push(req.user)
             res.status(201).send()
             // user.inQueue = true
             user.save()
+        } else {
+            throw new Error('User type not recognized')
         }
-        else{
-            throw new Error()
-        }
+        
     } catch (e) {
         console.log(e);
         
@@ -188,13 +172,20 @@ router.post('/users/find_passenger', auth, async (req, res) => {
 })
 
 // ride status
-router.post('/users/ride_passenger', auth, async (req, res) => {
+router.post('/users/ride', auth, async (req, res) => {
     
     try {
         const body = req.body
         const user = req.user
         // look for a match and a ride instance
-        const match =  await Match.findOne({passenger: user.email, active: true})
+        if (user.userType == 'passenger') {
+            var match =  await Match.findOne({passenger: user.email, active: true})
+        } else if (user.userType == 'driver') {
+            var match =  await Match.findOne({driver: user.email, active: true})
+        } else {
+            throw new Error('User type not recognized.')
+        }
+        
         
         var ride = await Ride.findOne({matchmakeID: match._id, ongoing: true})
        
@@ -209,6 +200,7 @@ router.post('/users/ride_passenger', auth, async (req, res) => {
                     finished: false
                 })
         }
+        ride.save()
         res.status(201).send({ride})
         
     } catch (e) {
@@ -218,17 +210,43 @@ router.post('/users/ride_passenger', auth, async (req, res) => {
     }
 })
 
-// feedback route
-router.post('/users/feedback', auth, async (req, res) => {
+// finished route
+router.post('/users/ride_finish', auth, async (req, res) => {
     
     try {
-        res.status(201).send()
+        const body = req.body
+        const user = req.user
+        // look for a match and a ride instance
+        if (user.userType == 'passenger') {
+            var match =  await Match.findOne({passenger: user.email, active: true})
+        } else {
+            var match =  await Match.findOne({driver: user.email, active: true})
+        }
+        var ride = await Ride.findOne({matchmakeID: match._id, finished: false})
+        // feedback the match score
+        match.matchScore = (match.matchScore + body.feedback) / 2
+        // if both parties finishes, the ride instance finishes, if not, the server waits for both of them to finish.
+        if (body.feedback < 5) {
+            // if low feedback, blacklist the match
+            match.isBlacklisted = true
+        } else {
+            if (ride.ongoing) {
+                ride.ongoing = false
+                res.status(202).send() // see http status codes
+            } else {
+                ride.finished = true
+                res.status(200).send()
+            }
+        }
+        match.active = false
+        ride.save()
+        match.save()
         
     } catch (e) {
         res.status(500).send()
+        throw new Error(e)
     }
 })
 
-// 
 
 module.exports = router
