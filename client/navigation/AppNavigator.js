@@ -7,6 +7,7 @@ import LinksScreen from '../screens/LinksScreen';
 import LoginScreen from '../screens/LoginScreen';
 import RegisterScreen from '../screens/RegisterScreen';
 import CommentScreen from '../screens/CommentScreen';
+import ProfileScreen from '../screens/LoginScreen';
 
 export default createAppContainer(createSwitchNavigator({
   // You could add another route here for authentication.
@@ -17,6 +18,7 @@ export default createAppContainer(createSwitchNavigator({
   Register:RegisterScreen,
   Comment:CommentScreen,
   Main: MainTabNavigator,
+  Profile: ProfileScreen,
  
 },
 {

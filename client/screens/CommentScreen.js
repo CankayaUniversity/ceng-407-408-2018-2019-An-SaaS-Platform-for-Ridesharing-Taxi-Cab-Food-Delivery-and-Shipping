@@ -76,7 +76,7 @@ const styles = StyleSheet.create({
       borderRadius:30,
       borderBottomWidth: 1,
       width:250,
-      height:300,
+      height:200,
       marginBottom:20,
       flexDirection: 'row',
       alignItems:'center'
