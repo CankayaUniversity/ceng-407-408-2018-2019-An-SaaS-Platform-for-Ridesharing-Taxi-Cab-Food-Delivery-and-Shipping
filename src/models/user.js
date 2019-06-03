@@ -57,6 +57,14 @@ const userSchema = new mongoose.Schema({
             }
         }
     },
+    userScore: {
+        type: Number,
+        default: 8
+    },
+    inQueue: {
+        type: Boolean,
+        default: false
+    },
     tokens: [{
         token: {
             type: String,
@@ -69,7 +77,7 @@ const userSchema = new mongoose.Schema({
 // jwt.sign(payload, signature)
 userSchema.methods.generateAuthToken = async function () {
     const user = this
-    const token = jwt.sign({ _id: user._id.toString() }, 'riders-ots-user')
+    const token = jwt.sign({ _id: user._id.toString() }, process.env.JWT_SECRET)
     // add created token to the database
     user.tokens = user.tokens.concat({ token })
     await user.save()

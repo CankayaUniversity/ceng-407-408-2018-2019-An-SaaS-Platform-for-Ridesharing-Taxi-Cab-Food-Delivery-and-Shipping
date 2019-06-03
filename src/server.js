@@ -5,7 +5,7 @@ const app = express()
 const hbs = require('hbs')
 
 // specify the port or use a development port
-const port = process.env.port || 3000
+const port = process.env.PORT
 
 // define mongoose.js for mongodb connection
 require('./db/mongoose')
