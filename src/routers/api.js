@@ -108,8 +108,12 @@ router.post('/users/logoutAll', auth, async (req, res) => {
 // get profile
 router.get('/users/me', auth, async (req, res) => {
     try {
-        res.send(req.user)
+        const user = req.user
+
+        res.status(200).send(user)
     } catch (e) {
+        console.log(e);
+        
         res.status(500).send()
     }
 })
@@ -187,7 +191,7 @@ router.post('/users/ride', auth, async (req, res) => {
         }
         
         
-        var ride = await Ride.findOne({matchmakeID: match._id, ongoing: true})
+        var ride = await Ride.findOne({matchmakeID: match._id})
        
         if (match && !ride) {
             // if it doesn't exist, create it so that the other recipient doesn't have to
@@ -216,6 +220,7 @@ router.post('/users/ride_finish', auth, async (req, res) => {
     try {
         const body = req.body
         const user = req.user
+        var price = req.distance * 0.005
         // look for a match and a ride instance
         if (user.userType == 'passenger') {
             var match =  await Match.findOne({passenger: user.email, active: true})
@@ -232,10 +237,10 @@ router.post('/users/ride_finish', auth, async (req, res) => {
         } else {
             if (ride.ongoing) {
                 ride.ongoing = false
-                res.status(202).send() // see http status codes
+                res.status(202).send(price) // see http status codes
             } else {
                 ride.finished = true
-                res.status(200).send()
+                res.status(200).send(price)
             }
         }
         match.active = false

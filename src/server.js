@@ -44,3 +44,7 @@ app.listen(port, () => {
     console.log('Server is up on port', port);
     
 })
+
+process.on('uncaughtException', function (err) {
+    console.log(err);
+}); 

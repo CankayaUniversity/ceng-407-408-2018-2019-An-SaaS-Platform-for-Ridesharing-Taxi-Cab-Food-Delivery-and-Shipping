@@ -32,6 +32,7 @@ matchSchema.methods.makeBlacklist = function () {
     match.isBlacklisted = true
 }
 
+
 const Match = mongoose.model('Match', matchSchema)
 
 module.exports = Match

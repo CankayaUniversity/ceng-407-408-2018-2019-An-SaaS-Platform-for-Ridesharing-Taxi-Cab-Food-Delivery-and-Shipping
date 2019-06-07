@@ -3,6 +3,11 @@ const validator = require( 'validator')
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
 
+const Ride = require('./../models/ride')
+const Match = require('./../models/match')
+
+
+
 // schema for the User entity
 const userSchema = new mongoose.Schema({
     name: {
@@ -94,6 +99,29 @@ userSchema.methods.toJSON = function () {
     delete userObject.tokens
 
     return userObject
+}
+
+
+// this method finds the ride history of a user by looking at the collection
+userSchema.methods.findHistory = function () {
+    const user = this
+
+    var matches = Match.find({ $or:[ {'passenger': user.email}, {'driver': user.email}] })
+    var rides = []
+    
+    Object.keys(matches).forEach( (key) => {
+        rides.push(Ride.find({matchmakeID: key._id}))
+    })
+
+    
+
+    // matches.forEach(match => {
+    //     rides.push(Ride.find({matchmakeID: match._id}))
+    // })
+    
+    // console.log(rides);
+    
+    return rides
 }
 
 // a method for finding user by email, and authenticating them via their hashed password
