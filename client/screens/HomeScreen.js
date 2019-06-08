@@ -1,196 +1,84 @@
-import React from 'react';
-import {
-  Image,
-  Platform,
-  ScrollView,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from 'react-native';
-import { WebBrowser } from 'expo';
-import {MapView,Permissions,Location} from 'expo';
-import {DestinationButton} from "../components/DestinationButton";
-import {CurrentLocationButton} from "../components/CurrentLocationButton";
+import React, { Component } from 'react';
+import { StyleSheet, View } from 'react-native';
+import { MapView, Permissions, Location } from 'expo';
+// import { connect } from 'react-redux';
 
-import { MonoText } from '../components/StyledText';
+import DestinationButton from '../components/DestinationButton';
+import { CurrentLocationButton } from '../components/CurrentLocationButton';
 
-export default class HomeScreen extends React.Component {
-    constructor(props){
-        super(props);
-        this.state = {
-            region:null 
-        }
-        this.__getLocationAsync();
-    }
+class HomeScreen extends Component {
   static navigationOptions = {
     header: null,
   };
 
-  __getLocationAsync = async () => {
-      let {status } = await Permissions.askAsync((Permissons.LOCATION));
-      if (status !=='granted'){
-          console.log("Permission to acces location was denied.");
-      }
-      let location = await Location.getCurrentPositionAsync({enabledHighAccuracy: true});
-      let region = {
-          latitude: location.coords.latitude,
-          longitude: location.coords.longitude,
-          latitudeDelta: 0.045,
-          longitudeDelta: 0.045
-      }
-      this.setState({region:region})
+  constructor(props) {
+    super(props);
+    this.state = {
+      region: null,
+    };
+    this.__getLocationAsync();
   }
 
-  centerMap() {
-      const {latitude,
-        longitude,
-        latitudeDelta,
-        longitudeDelta} = this.state.region;
-      this.map.animateToRegion({
-          latitude,
-          longitude,
-          latitudeDelta,
-          longitudeDelta
-      });  
+  __getLocationAsync = async () => {
+    const { status } = await Permissions.askAsync(Permissions.LOCATION);
+    if (status !== 'granted') {
+      console.log('Permission to acces location was denied.');
+    }
+    const location = await Location.getCurrentPositionAsync({ enabledHighAccuracy: true });
+    const region = {
+      latitude: location.coords.latitude,
+      longitude: location.coords.longitude,
+      latitudeDelta: 0.045,
+      longitudeDelta: 0.045,
+    };
+    this.setState({ region });
+  };
+
+  handleFocusPress() {
+    const {
+      region: {
+        latitude, longitude, latitudeDelta, longitudeDelta,
+      } = {},
+    } = this.state;
+
+    this.map.animateToRegion({
+      latitude,
+      longitude,
+      latitudeDelta,
+      longitudeDelta,
+    });
   }
+
 
   render() {
+    const { navigation, destination } = this.props;
     return (
       <View style={styles.container}>
-        <DestinationButton/>
-        <CurrentLocationButton cb={() => {this.centerMap()}}/>
+        <DestinationButton onPress={() => navigation.navigate('Route')} />
+        <CurrentLocationButton
+          cb={() => {
+            this.handleFocusPress();
+          }} />
         <MapView
-            initialRegion = {this.state.region}
-            showsUserLocation={true}
-            showsCompass = {true}
-            rotateEnabled={false}
-            ref={(map) => {this.map = map}}
-            style={{flex:1}}
-        />
+          initialRegion={this.state.region}
+          showsUserLocation
+          showsCompass
+          rotateEnabled={false}
+          ref={(map) => {
+            this.map = map;
+          }}
+          style={{ flex: 1 }} />
       </View>
     );
   }
-
-  _maybeRenderDevelopmentModeWarning() {
-    if (__DEV__) {
-      const learnMoreButton = (
-        <Text onPress={this._handleLearnMorePress} style={styles.helpLinkText}>
-          Learn more
-        </Text>
-      );
-
-      return (
-        <Text style={styles.developmentModeText}>
-          Development mode is enabled, your app will be slower but you can use useful development
-          tools. {learnMoreButton}
-        </Text>
-      );
-    } else {
-      return (
-        <Text style={styles.developmentModeText}>
-          You are not in development mode, your app will run at full speed.
-        </Text>
-      );
-    }
-  }
-
-  _handleLearnMorePress = () => {
-    WebBrowser.openBrowserAsync('https://docs.expo.io/versions/latest/guides/development-mode');
-  };
-
-  _handleHelpPress = () => {
-    WebBrowser.openBrowserAsync(
-      'https://docs.expo.io/versions/latest/guides/up-and-running.html#can-t-see-your-changes'
-    );
-  };
 }
+
+export default HomeScreen;
+
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
-  },
-  developmentModeText: {
-    marginBottom: 20,
-    color: 'rgba(0,0,0,0.4)',
-    fontSize: 14,
-    lineHeight: 19,
-    textAlign: 'center',
-  },
-  contentContainer: {
-    paddingTop: 30,
-  },
-  welcomeContainer: {
-    alignItems: 'center',
-    marginTop: 10,
-    marginBottom: 20,
-  },
-  welcomeImage: {
-    width: 100,
-    height: 80,
-    resizeMode: 'contain',
-    marginTop: 3,
-    marginLeft: -10,
-  },
-  getStartedContainer: {
-    alignItems: 'center',
-    marginHorizontal: 50,
-  },
-  homeScreenFilename: {
-    marginVertical: 7,
-  },
-  codeHighlightText: {
-    color: 'rgba(96,100,109, 0.8)',
-  },
-  codeHighlightContainer: {
-    backgroundColor: 'rgba(0,0,0,0.05)',
-    borderRadius: 3,
-    paddingHorizontal: 4,
-  },
-  getStartedText: {
-    fontSize: 17,
-    color: 'rgba(96,100,109, 1)',
-    lineHeight: 24,
-    textAlign: 'center',
-  },
-  tabBarInfoContainer: {
-    position: 'absolute',
-    bottom: 0,
-    left: 0,
-    right: 0,
-    ...Platform.select({
-      ios: {
-        shadowColor: 'black',
-        shadowOffset: { height: -3 },
-        shadowOpacity: 0.1,
-        shadowRadius: 3,
-      },
-      android: {
-        elevation: 20,
-      },
-    }),
-    alignItems: 'center',
-    backgroundColor: '#fbfbfb',
-    paddingVertical: 20,
-  },
-  tabBarInfoText: {
-    fontSize: 17,
-    color: 'rgba(96,100,109, 1)',
-    textAlign: 'center',
-  },
-  navigationFilename: {
-    marginTop: 5,
-  },
-  helpContainer: {
-    marginTop: 15,
-    alignItems: 'center',
-  },
-  helpLink: {
-    paddingVertical: 15,
-  },
-  helpLinkText: {
-    fontSize: 14,
-    color: '#2e78b7',
   },
 });
