@@ -1,0 +1,70 @@
+{
+  "env": {
+    "browser": true,
+    "es6": true,
+    "node": true,
+    "react-native/react-native": true,
+    "jest/globals": true
+  },
+  "extends": "airbnb",
+  "parser": "babel-eslint",
+  "parserOptions": {
+    "sourceType": "module",
+    "ecmaFeatures": {
+      "jsx": true
+    }
+  },
+  "plugins": ["react", "react-native", "eslint-plugin-import", "jest"],
+  "globals": {
+    "__DEV__": true,
+    "console": true,
+    "alert": true
+  },
+  "rules": {
+    "import/prefer-default-export": "off",
+    "global-require": "off",
+    "no-use-before-define": "off",
+    "no-return-assign": "off",
+    "no-console": "off",
+    "radix": "off",
+    "camelcase": "off",
+    "prefer-template": "warn",
+    "no-unused-vars": "warn",
+    "no-underscore-dangle": "off",
+    "object-curly-spacing": "warn",
+    "import/first": "off",
+    "class-methods-use-this": "off",
+    "consistent-return": "off",
+    "no-useless-constructor": "off",
+    "arrow-parens": "warn",
+    "implicit-arrow-linebreak": "off",
+    "import/no-extraneous-dependencies": "off",
+    "import/no-unresolved": "off",
+    "import/extensions": "off",
+    "prefer-const": "warn",
+    "object-shorthand": "warn",
+    "max-len": ["warn", 100],
+    "jsx-a11y/accessible-emoji": "off",
+    "nonblock-statement-body-position": ["warn", "below"],
+    "comma-dangle": ["warn", "always-multiline"],
+    "react/jsx-closing-bracket-location": ["warn", "after-props"],
+    "react/jsx-one-expression-per-line": "off",
+    "react/destructuring-assignment": "warn",
+    "react/prefer-stateless-function": "warn",
+    "react/no-did-mount-set-state": "off",
+    "react/prop-types": "off",
+    "react/no-array-index-key": "warn",
+    "react/no-this-in-sfc": 0,
+    "react/jsx-filename-extension": [
+      "error",
+      {
+        "extensions": [".js", ".jsx"]
+      }
+    ],
+    "react-native/no-unused-styles": "error",
+    "react-native/split-platform-components": "warn",
+    "react-native/no-color-literals": "off",
+    "react-native/no-raw-text": "error",
+    "react-native/no-inline-styles": "warn"
+  }
+}
