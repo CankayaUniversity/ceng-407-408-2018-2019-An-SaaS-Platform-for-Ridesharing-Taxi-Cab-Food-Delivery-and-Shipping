@@ -9,6 +9,7 @@ import {
   Image,
   Alert,
 } from 'react-native';
+import { Constants, SecureStore } from 'expo';
 
 export default class LoginScreen extends React.Component {
   static navigationOptions = {
@@ -25,8 +26,9 @@ export default class LoginScreen extends React.Component {
 
 
   _userLogin(props) {
+  
     if (props) {
-      fetch('http://localhost:3000/users/login', {
+     return fetch('http://192.168.1.25:3000/users/login', {
         method: 'POST',
         headers: {
           Accept: 'application/json',
@@ -37,13 +39,18 @@ export default class LoginScreen extends React.Component {
           password: this.password,
         }),
       })
-        .then(response => response.json.token())
-        .then((responseData) => {
+        .then(response => response.json)
+        .then((responseData) => 
           Alert.alert('Login Success'),
-          this._onValuesChange(STORAGE_KEY, responseData.token);
-        })
+          this.props.navigation.navigate('Main')
+
+        )
+
         .done();
+        
     }
+   
+   
   }
 
 

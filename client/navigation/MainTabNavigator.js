@@ -3,24 +3,18 @@ import { Platform, AppRegistry } from 'react-native';
 import { createStackNavigator, createBottomTabNavigator } from 'react-navigation';
 
 import TabBarIcon from '../components/TabBarIcon';
-import LoginScreen from '../screens/LoginScreen';
 
 AppRegistry.registerComponent('Sblank', () => LoginScreen);
 import HomeScreen from '../screens/HomeScreen';
 import LinksScreen from '../screens/LinksScreen';
 import SettingsScreen from '../screens/SettingsScreen';
 import RouteScreen from '../screens/RouteScreen';
+import ProfileScreen from '../screens/ProfileScreen'
 
-const LoginStack = createStackNavigator(
-  {
-    Login: LoginScreen,
-  },
-  { headerMode: 'none' }
-);
+
 
 const HomeStack = createStackNavigator({
   Home: HomeScreen,
-  Route: RouteScreen,
 });
 
 HomeStack.navigationOptions = {
@@ -35,13 +29,29 @@ HomeStack.navigationOptions = {
       } />
   ),
 };
-
-const LinksStack = createStackNavigator({
-  Links: LinksScreen,
+const RouteStack = createStackNavigator({
+  Route: RouteScreen,
 });
 
-LinksStack.navigationOptions = {
-  tabBarLabel: 'Links',
+RouteStack.navigationOptions = {
+  tabBarLabel: 'History',
+  tabBarIcon: ({ focused }) => (
+    <TabBarIcon
+      focused={focused}
+      name={
+        Platform.OS === 'ios'
+          ? `ios-information-circle${focused ? '' : '-outline'}`
+          : 'md-information-circle'
+      } />
+  ),
+};
+
+const ProfileStack = createStackNavigator({
+  Profile: ProfileScreen,
+});
+
+ProfileStack.navigationOptions = {
+  tabBarLabel: 'Profile',
   tabBarIcon: ({ focused }) => (
     <TabBarIcon focused={focused} name={Platform.OS === 'ios' ? 'ios-link' : 'md-link'} />
   ),
@@ -63,7 +73,7 @@ SettingsStack.navigationOptions = {
 
 export default createBottomTabNavigator({
   HomeStack,
-  LoginStack,
-  LinksStack,
+  RouteStack,
+  ProfileStack,
   SettingsStack,
 });

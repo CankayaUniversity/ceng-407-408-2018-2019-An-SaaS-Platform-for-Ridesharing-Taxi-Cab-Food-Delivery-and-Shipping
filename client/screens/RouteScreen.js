@@ -20,9 +20,9 @@ import { setPickupLocation, setDestinationLocation } from '../store/actions';
 
 class RouteScreen extends Component {
   static navigationOptions = {
-    title: 'Select Destination',
+    title: 'History',
     headerStyle: {
-      backgroundColor: '#a29bfe',
+      backgroundColor: '#00b5ec',
     },
     headerTintColor: '#fff',
     headerTitleStyle: {

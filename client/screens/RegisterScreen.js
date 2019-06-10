@@ -22,30 +22,31 @@ export default class LoginScreen extends Component {
   }
 
   _userRegister(user) {
-    if (user) {
-      fetch('http://localhost:3000/users', {
-        method: 'POST',
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          name: this.name,
-          surname: this.surname,
-          password: this.password,
-          email: this.email,
-          city: this.city,
-          phone: this.phone,
-          userType: this.userType,
-        }),
-      })
-        .then(response => response.json())
-        .then((responseData) => {
-          Alert.alert('Login Success'), this._onValuseChange(STORAGE_KEY, responseData.token);
-        })
-        .done();
+    // if (user) {
+    //   fetch('http://localhost:3000/users', {
+    //     method: 'POST',
+    //     headers: {
+    //       Accept: 'application/json',
+    //       'Content-Type': 'application/json',
+    //     },
+    //     body: JSON.stringify({
+    //       name: this.name,
+    //       surname: this.surname,
+    //       password: this.password,
+    //       email: this.email,
+    //       city: this.city,
+    //       phone: this.phone,
+    //       userType: this.userType,
+    //     }),
+    //   })
+    //     .then(response => response.json())
+        
+        // .done();
+        Alert.alert('Registered Succesfully')
+        this.props.navigation.navigate('Login')
     }
-  }
+    
+  
 
   render() {
     return (
@@ -115,7 +116,7 @@ export default class LoginScreen extends Component {
             placeholder="Phone"
             keyboardType="number-pad"
             underlineColorAndroid="transparent"
-            onChangeText={Phone => this.setState({ phone })} />
+            onChangeText={phone => this.setState({ phone })} />
         </View>
         <View style={styles.inputContainer}>
           <Image
