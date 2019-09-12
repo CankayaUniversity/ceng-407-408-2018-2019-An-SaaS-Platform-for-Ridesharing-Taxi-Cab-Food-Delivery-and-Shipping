@@ -11,7 +11,7 @@ Check our [video demo](https://youtu.be/ljGGI5UGfnw)!
 
 ## Group Members:
 
- * Onur Ata Sarıtaş (c1511049@student.cankaya.edu.tr)
+ * Onur Ata Sarıtaş (onuratasaritas@gmail.com)
 
  * Onur Dündar Yaldır (c1411066@student.cankaya.edu.tr)
 
